@@ -27,7 +27,7 @@ target_link_libraries(gdnative_cpp PRIVATE godot::cpp)
 # Note that this function is part of the godot-cpp cmake package
 install_gdnlib(
 	# The name of the target library to install
-	TARGET chess-training 
+	TARGET gdnative_cpp
 	
 	# The destination to install it to.
 	# Assumed to be a directory inside a pre-existing godot project directory.
