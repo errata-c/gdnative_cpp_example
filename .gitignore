@@ -16,4 +16,5 @@ zconf.h.included
 logs
 Thumbs.db
 CMakeSettings.json
+CMakeUserPresets.json
 demo/bin
