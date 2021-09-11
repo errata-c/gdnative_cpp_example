@@ -1,3 +1,4 @@
+.vs
 out
 build
 zconf.h
@@ -16,4 +17,5 @@ zconf.h.included
 logs
 Thumbs.db
 CMakeSettings.json
+CMakeUserPresets.json
 demo/bin
