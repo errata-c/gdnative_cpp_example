@@ -2,18 +2,24 @@
 
 using namespace godot;
 
-void gdexample::_register_methods() {
-	register_method((char *)"_process", &gdexample::_process);
-	register_property<gdexample, float>("amplitude", &gdexample::amplitude, 10.0);
-	register_property<gdexample, float>("speed", &gdexample::set_speed, &gdexample::get_speed, 1.0);
+void GDExample::_register_methods() {
+	register_method("_process", &GDExample::_process);
+	register_property<GDExample, float>("amplitude", &GDExample::amplitude, 10.0);
+	register_property<GDExample, float>("speed", &GDExample::set_speed, &GDExample::get_speed, 1.0);
 
-	Dictionary args;
-	args[Variant("node")] = Variant(Variant::OBJECT);
-	args[Variant("new_pos")] = Variant(Variant::VECTOR2);
-	register_signal<gdexample>((char *)"position_changed", args);
+	register_signal<GDExample>((char *)"position_changed", "node", GODOT_VARIANT_TYPE_OBJECT, "new_pos", GODOT_VARIANT_TYPE_VECTOR2);
 }
 
-gdexample::gdexample() {
+GDExample::GDExample() {
+
+}
+
+GDExample::~GDExample() {
+	// add your cleanup here
+}
+
+
+void GDExample::_init() {
 	// initialize any variables here
 	time_passed = 0.0;
 	time_emit = 0.0;
@@ -21,11 +27,7 @@ gdexample::gdexample() {
 	speed = 1.0;
 }
 
-gdexample::~gdexample() {
-	// add your cleanup here
-}
-
-void gdexample::_process(float delta) {
+void GDExample::_process(float delta) {
 	time_passed += speed * delta;
 
 	Vector2 new_position = Vector2(
@@ -33,17 +35,22 @@ void gdexample::_process(float delta) {
 		amplitude + (amplitude * cos(time_passed * 1.5))
 	);
 
-	owner->set_position(new_position);
+	set_position(new_position);
 
 	time_emit += delta;
 	if (time_emit > 1.0) {
-		Array args;
-		args.push_back(Variant(owner));
-		args.push_back(Variant(new_position));
-		owner->emit_signal("position_changed", args);
+		emit_signal("position_changed", this, new_position);
 
 		time_emit = 0.0;
 	}
+}
+
+void GDExample::set_speed(float p_speed) {
+	speed = p_speed;
+}
+
+float GDExample::get_speed() {
+	return speed;
 }
 
 void gdexample::set_speed(float p_speed) {
