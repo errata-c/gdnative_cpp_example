@@ -14,13 +14,15 @@ FetchContent_Declare(
 # Includes godot-cpp package, builds a target godot::cpp
 FetchContent_MakeAvailable(godot-cpp)
 
+# It is also possible to compile and install the godot-cpp package, then use find_package to retreive it.
+
 # Add the gdnative library, MUST be a SHARED library, except on iOS, as it only allows static linking (Note that iOS support is UNTESTED for godot-cpp)
 add_library(gdnative_cpp SHARED
 	"src/gdexample.cpp"
 	"src/gdlibrary.cpp"
 	"src/gdexample.h"
 )
-# Link to the library
+# Link to the library, transitively adds all the necessary build information, such as the minimum required cxx standard (in this case c++14)
 target_link_libraries(gdnative_cpp PRIVATE godot::cpp)
 
 # Automatically install the library into the actual godot project
