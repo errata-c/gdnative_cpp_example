@@ -5,14 +5,28 @@ LANGUAGES CXX)
 
 include(FetchContent)
 
-# The repo of godot-cpp
-FetchContent_Declare(
-	godot-cpp
-	GIT_REPOSITORY https://github.com/errata-c/godot-cpp.git
-	GIT_TAG master
-)
-# Includes godot-cpp package, builds a target godot::cpp
-FetchContent_MakeAvailable(godot-cpp)
+# Attempt to find a preinstalled package
+find_package(godot-cpp 4.0 CONFIG)
+
+# Fallback to using the 
+if(NOT ${godot-cpp_FOUND})
+	message("Failed to find preinstalled godot-cpp package, attempt fallback to FetchContent")
+	
+	# The repo of godot-cpp
+	FetchContent_Declare(
+		godot-cpp
+		GIT_REPOSITORY https://github.com/errata-c/godot-cpp.git
+		GIT_TAG "4.0"
+	)
+	# Includes godot-cpp package, builds a target godot::cpp
+	FetchContent_MakeAvailable(godot-cpp)
+else()
+	message("Found a preinstalled godot-cpp package")
+endif()
+
+if(NOT TARGET "godot::cpp")
+	message(FATAL_ERROR "Failed to find the godot-cpp library!")
+endif()
 
 # It is also possible to compile and install the godot-cpp package, then use find_package to retreive it.
 
